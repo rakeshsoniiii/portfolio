@@ -50,8 +50,24 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       return tex;
     };
 
-    // --- Starfield Background (Realistic Deep Space) ---
-    const starCount = 6000;
+    // --- Starfield Background (Realistic Deep Space with Soft Circular Sprites) ---
+    const createCircleTexture = () => {
+      const cvs = document.createElement('canvas');
+      cvs.width = 32;
+      cvs.height = 32;
+      const ctx = cvs.getContext('2d');
+      const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.75)');
+      grad.addColorStop(0.7, 'rgba(255, 255, 255, 0.2)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 32, 32);
+      return new THREE.CanvasTexture(cvs);
+    };
+    const circleTex = createCircleTexture();
+
+    const starCount = 5000;
     const starGeo = new THREE.BufferGeometry();
     const starPos = new Float32Array(starCount * 3);
     const starCols = new Float32Array(starCount * 3);
@@ -66,43 +82,36 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       starPos[i * 3 + 1] = dist * Math.sin(phi) * Math.sin(theta);
       starPos[i * 3 + 2] = dist * Math.cos(phi);
 
-      // Realistic star color distribution — mostly dim white, rare blue/orange
       const colorRoll = Math.random();
-      const brightness = 0.4 + Math.random() * 0.6; // dim to bright
+      const brightness = 0.35 + Math.random() * 0.55;
       if (colorRoll > 0.92) {
-        // Blue-white hot stars (rare)
         starCols[i * 3] = 0.65 * brightness;
         starCols[i * 3 + 1] = 0.78 * brightness;
         starCols[i * 3 + 2] = 1.0 * brightness;
       } else if (colorRoll > 0.82) {
-        // Warm golden/orange stars
         starCols[i * 3] = 1.0 * brightness;
         starCols[i * 3 + 1] = 0.82 * brightness;
         starCols[i * 3 + 2] = 0.55 * brightness;
-      } else if (colorRoll > 0.75) {
-        // Red dwarf tint
-        starCols[i * 3] = 1.0 * brightness;
-        starCols[i * 3 + 1] = 0.6 * brightness;
-        starCols[i * 3 + 2] = 0.5 * brightness;
       } else {
-        // Cool white — majority
         starCols[i * 3] = 0.88 * brightness;
         starCols[i * 3 + 1] = 0.92 * brightness;
         starCols[i * 3 + 2] = 1.0 * brightness;
       }
 
-      // Varied sizes — most small, a few bigger
-      starSizes[i] = Math.random() < 0.05 ? 1.8 + Math.random() * 1.5 : 0.4 + Math.random() * 1.0;
+      starSizes[i] = Math.random() < 0.05 ? 1.4 + Math.random() * 1.0 : 0.4 + Math.random() * 0.6;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
     starGeo.setAttribute('color', new THREE.BufferAttribute(starCols, 3));
 
     const starMat = new THREE.PointsMaterial({
-      size: 1.0,
+      size: 1.2,
+      map: circleTex,
       vertexColors: true,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.65,
+      alphaTest: 0.005,
       sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
     });
     const starPoints = new THREE.Points(starGeo, starMat);
     scene.add(starPoints);
@@ -255,14 +264,14 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     const ambientLight = new THREE.AmbientLight(0x1a2233, 0.6);
     scene.add(ambientLight);
 
-    // Directional Lighting for near planets (Earth, Mars, Jupiter, Saturn)
-    const dirSun = new THREE.DirectionalLight(0xfffaee, 2.5);
-    dirSun.position.set(-60, 45, 80);
+    // Directional Lighting for near planets — warm sunlight from front-left
+    const dirSun = new THREE.DirectionalLight(0xfffaea, 3.0);
+    dirSun.position.set(-35, 25, 45);
     scene.add(dirSun);
 
-    // Subtle Rim Fill
-    const fillLight = new THREE.DirectionalLight(0x4488ff, 0.45);
-    fillLight.position.set(60, -35, -50);
+    // Subtle Cyan/Blue Rim Fill
+    const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.65);
+    fillLight.position.set(45, -15, 25);
     scene.add(fillLight);
 
     // --- Concentric Planetary Orbit Lines (8 Planets) ---
@@ -341,8 +350,8 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     const earthClouds = new THREE.Mesh(cloudGeo, cloudMat);
     earthGroup.add(earthClouds);
 
-    // Earth Atmosphere Fresnel Glow
-    const atmoGeo = new THREE.SphereGeometry(3.48, 48, 32);
+    // Earth Atmosphere Fresnel Glow (Vibrant Blue Halo matching reference)
+    const atmoGeo = new THREE.SphereGeometry(3.48, 64, 48);
     const atmoMat = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -354,8 +363,8 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       fragmentShader: `
         varying vec3 vNormal;
         void main() {
-          float intensity = pow(0.6 - dot(vNormal, vec3(0, 0, 1.0)), 2.2);
-          gl_FragColor = vec4(0.35, 0.65, 1.0, 1.0) * intensity * 1.15;
+          float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+          gl_FragColor = vec4(0.35, 0.72, 1.0, 1.0) * intensity * 1.6;
         }
       `,
       blending: THREE.AdditiveBlending,
@@ -402,26 +411,7 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     scene.add(marsGroup);
     bodies.mars = { group: marsGroup, mesh: marsMesh, phobos, speed: 0.0014 };
 
-    // --- Asteroid Belt (Field of floating procedural rocks) ---
-    const asteroidCount = 450;
-    const asteroidGeo = new THREE.BufferGeometry();
-    const asteroidPos = new Float32Array(asteroidCount * 3);
-    for (let i = 0; i < asteroidCount; i++) {
-      const aDist = 16 + Math.random() * 22;
-      const aAngle = Math.random() * Math.PI * 2;
-      asteroidPos[i * 3] = aDist * Math.cos(aAngle);
-      asteroidPos[i * 3 + 1] = (Math.random() - 0.5) * 8;
-      asteroidPos[i * 3 + 2] = -60 + (Math.random() - 0.5) * 16;
-    }
-    asteroidGeo.setAttribute('position', new THREE.BufferAttribute(asteroidPos, 3));
-    const asteroidMat = new THREE.PointsMaterial({
-      size: 2.2,
-      color: 0xaaaa99,
-      transparent: true,
-      opacity: 0.6,
-    });
-    const asteroidField = new THREE.Points(asteroidGeo, asteroidMat);
-    scene.add(asteroidField);
+    // Asteroids removed to eliminate blocky white square particle artifacts
 
     // 6. Jupiter & 4 Galilean Moons (Featured Section)
     const jupiterGroup = new THREE.Group();
@@ -621,9 +611,19 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     let lastActiveIdx = -1;
 
     const handleScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll > 0) {
-        targetProg = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+      const introEl = document.getElementById('cinematic-intro');
+      const introHeight = introEl ? introEl.offsetHeight : 0;
+      const currentY = window.scrollY;
+
+      if (currentY <= introHeight) {
+        // While user is in intro, SolarCanvas stays locked at 0.00 (Earth)
+        targetProg = 0.0;
+      } else {
+        // Once past intro into portfolio sections, smoothly map scroll through solar system
+        const mainScrollable = document.documentElement.scrollHeight - window.innerHeight - introHeight;
+        if (mainScrollable > 0) {
+          targetProg = Math.max(0, Math.min(1, (currentY - introHeight) / mainScrollable));
+        }
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -710,9 +710,6 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
           bodies.neptune.triton.position.z = Math.sin(elapsed * 0.8) * 6.2;
         }
       }
-
-      // Asteroid field gentle drift
-      asteroidField.rotation.y += 0.0004;
 
       // Animate Sun surface shader
       sunMat.uniforms.uTime.value = elapsed;

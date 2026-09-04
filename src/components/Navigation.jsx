@@ -42,7 +42,7 @@ export default function Navigation() {
         <img
           src="/images/rakesh-signature.png"
           alt="Rakesh Soni Signature"
-          className="h-11 md:h-14 w-auto invert opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all brightness-150"
+          className="h-10 md:h-12 w-auto filter invert brightness-200 mix-blend-screen opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all select-none"
           onError={(e) => {
             e.target.style.display = 'none';
           }}
