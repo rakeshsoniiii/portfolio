@@ -116,13 +116,13 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     const starPoints = new THREE.Points(starGeo, starMat);
     scene.add(starPoints);
 
-    // --- Central Helios Sun (Realistic Procedural Surface) ---
-    const sunPos = new THREE.Vector3(0, 0, -260);
+    // --- Central Helios Sun (Realistic Deep-Space Solar Core) ---
+    const sunPos = new THREE.Vector3(0, 0, -420);
     const sunGroup = new THREE.Group();
     sunGroup.position.copy(sunPos);
 
     // Realistic Sun Surface Shader with animated turbulence
-    const sunGeo = new THREE.SphereGeometry(18, 64, 48);
+    const sunGeo = new THREE.SphereGeometry(14, 64, 48);
     const sunMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -209,7 +209,7 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     sunGroup.add(sunMesh);
 
     // Inner Corona Glow (tight around sun)
-    const coronaGeo1 = new THREE.SphereGeometry(22, 48, 32);
+    const coronaGeo1 = new THREE.SphereGeometry(21, 48, 32);
     const coronaMat1 = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -221,8 +221,8 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       fragmentShader: `
         varying vec3 vNormal;
         void main() {
-          float intensity = pow(0.72 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
-          gl_FragColor = vec4(1.0, 0.82, 0.45, 1.0) * intensity * 2.5;
+          float intensity = pow(max(0.0, 0.55 - dot(vNormal, vec3(0, 0, 1.0))), 2.2);
+          gl_FragColor = vec4(1.0, 0.85, 0.5, 1.0) * intensity * 0.9;
         }
       `,
       blending: THREE.AdditiveBlending,
@@ -232,7 +232,7 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     sunGroup.add(new THREE.Mesh(coronaGeo1, coronaMat1));
 
     // Outer Corona Glow (wider, softer)
-    const coronaGeo2 = new THREE.SphereGeometry(30, 36, 24);
+    const coronaGeo2 = new THREE.SphereGeometry(26, 36, 24);
     const coronaMat2 = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -244,8 +244,8 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       fragmentShader: `
         varying vec3 vNormal;
         void main() {
-          float intensity = pow(0.55 - dot(vNormal, vec3(0, 0, 1.0)), 3.0);
-          gl_FragColor = vec4(1.0, 0.55, 0.15, 1.0) * intensity * 1.2;
+          float intensity = pow(max(0.0, 0.42 - dot(vNormal, vec3(0, 0, 1.0))), 3.0);
+          gl_FragColor = vec4(1.0, 0.6, 0.2, 1.0) * intensity * 0.4;
         }
       `,
       blending: THREE.AdditiveBlending,
@@ -557,9 +557,9 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       // 0.88: Neptune Deep Space Outpost (Contact Section) — Neptune & Sun on right
       { p: 0.88, cam: new THREE.Vector3(-3.4, 0.6, -218.0), look: new THREE.Vector3(0.2, -0.2, -235), roll: -0.12 },
       // 0.94: Pulling back into Heliocentric Overview
-      { p: 0.94, cam: new THREE.Vector3(-2.0, 48.0, -185.0), look: new THREE.Vector3(1.0, 0, -260), roll: 0.05 },
+      { p: 0.94, cam: new THREE.Vector3(-2.0, 48.0, -280.0), look: new THREE.Vector3(1.0, 0, -420), roll: 0.05 },
       // 1.00: Full 360° Grand Solar System View & Sun Core
-      { p: 1.00, cam: new THREE.Vector3(0.0, 130.0, -85.0), look: new THREE.Vector3(0, 0, -260), roll: 0.0 },
+      { p: 1.00, cam: new THREE.Vector3(0.0, 140.0, -200.0), look: new THREE.Vector3(0, 0, -420), roll: 0.0 },
     ];
 
     // Spline-like smooth Hermite interpolation along 3D flight path
@@ -644,7 +644,7 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
         return;
       }
 
-      const scrollPos = currentY + window.innerHeight * 0.35;
+      const scrollPos = currentY;
       if (scrollPos <= tops[0]) {
         targetProg = 0.00;
         return;

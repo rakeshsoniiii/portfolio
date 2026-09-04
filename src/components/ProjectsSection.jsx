@@ -101,36 +101,37 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="min-h-screen relative flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-20 py-28 z-10"
+      className="min-h-screen relative flex flex-col justify-center px-6 md:px-16 lg:px-24 py-28 z-10"
     >
-      <div className="max-w-6xl w-full">
+      {/* Constrained Left Column — Leaves Right 50% to 55% unobstructed for Uranus & Neptune */}
+      <div className="max-w-2xl w-full">
         {/* Section Header */}
-        <header className="mb-8">
+        <header className="mb-6">
           <p className="text-[11px] uppercase tracking-[0.28em] text-cyan-400/90 mb-3 font-mono font-medium flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse inline-block" />
-            URANUS · 19.2 AU · DEPLOYED ARCHITECTURES
+            URANUS & NEPTUNE · 19.2 AU · REPOSITORIES
           </p>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl text-blend-heading mb-4 tracking-tight font-heading">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl text-blend-heading mb-3 tracking-tight font-heading">
             Selected Works
           </h2>
-          <p className="text-sm md:text-base text-slate-300/90 font-light max-w-2xl leading-relaxed">
-            Production-grade web platforms, autonomous robotics pipelines, game engines, and full-stack AI applications engineered for performance.
+          <p className="text-sm text-slate-300/90 font-light max-w-lg leading-relaxed">
+            Production web platforms, autonomous robotics pipelines, game engines, and full-stack AI applications.
           </p>
         </header>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 text-[11px] font-mono uppercase tracking-widest" role="tablist">
+        <div className="flex flex-wrap gap-2 mb-6 text-[10px] font-mono uppercase tracking-widest" role="tablist">
           {categories.map((cat) => (
             <button
               key={cat.key}
               role="tab"
               aria-selected={filter === cat.key}
               onClick={() => setFilter(cat.key)}
-              className={`px-3.5 py-1.5 rounded-full transition-all duration-200 border ${
+              className={`px-3 py-1 rounded-full transition-all duration-200 border ${
                 filter === cat.key
                   ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
-                  : 'bg-black/30 text-slate-400 border-white/[0.08] hover:text-white hover:border-white/20'
+                  : 'bg-black/40 text-slate-400 border-white/[0.08] hover:text-white hover:border-white/20'
               }`}
             >
               {cat.label}
@@ -138,133 +139,122 @@ export default function ProjectsSection() {
           ))}
         </div>
 
-        {/* Balanced Responsive Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {/* Compact, Balanced Project Feed inspired by arstraumur.music */}
+        <div className="space-y-4">
           {filteredProjects.map((proj) => (
             <article
               key={proj.id}
-              className="cosmic-panel cosmic-panel-hover rounded-2xl p-5 md:p-6 flex flex-col justify-between group relative overflow-hidden"
+              className="cosmic-panel cosmic-panel-hover rounded-2xl p-4 sm:p-5 group relative overflow-hidden flex flex-col sm:flex-row gap-4 items-start"
             >
-              {/* Top: Balanced Image Box */}
-              <div>
-                <div
-                  onClick={() => setSelectedProject(proj)}
-                  className="w-full h-44 sm:h-48 md:h-52 rounded-xl overflow-hidden mb-4 relative cursor-pointer group/img border border-white/[0.08] bg-black/50 shadow-inner"
-                  title={`View details for ${proj.title}`}
-                >
-                  <img
-                    src={proj.image}
-                    alt={`${proj.title} project interface preview`}
-                    className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  {/* Subtle Gradient Scrim for Top & Bottom of Image */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
+              {/* Thumbnail Image Box: compact square/16:10 box */}
+              <div
+                onClick={() => setSelectedProject(proj)}
+                className="w-full sm:w-36 md:w-40 h-28 sm:h-28 rounded-xl overflow-hidden relative cursor-pointer flex-shrink-0 border border-white/10 bg-black/60 shadow-md group/img"
+                title={`Inspect ${proj.title}`}
+              >
+                <img
+                  src={proj.image}
+                  alt={`${proj.title} thumbnail`}
+                  className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
 
-                  {/* Overlaid Badges inside the Image Box */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
-                    <span className="bg-black/70 backdrop-blur-md border border-white/10 text-emerald-300 text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md font-medium">
-                      {proj.badge}
-                    </span>
+                {/* Badge Overlay */}
+                <div className="absolute top-2 left-2">
+                  <span className="bg-black/80 backdrop-blur-sm border border-white/15 text-emerald-300 text-[9px] font-mono uppercase px-1.5 py-0.5 rounded font-medium">
+                    {proj.badge}
+                  </span>
+                </div>
+
+                <div className="absolute bottom-1.5 right-1.5 opacity-0 group-hover/img:opacity-100 transition-opacity bg-black/80 text-[9px] font-mono text-slate-200 px-1.5 py-0.5 rounded border border-white/15">
+                  Inspect ↗
+                </div>
+              </div>
+
+              {/* Text & Meta Column */}
+              <div className="flex-1 min-w-0 flex flex-col justify-between h-full">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h3 className="text-base sm:text-lg font-heading text-slate-100 group-hover:text-emerald-300 transition-colors font-medium truncate">
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline focus:outline-none"
+                      >
+                        {proj.title}
+                      </a>
+                    </h3>
                     {proj.isLive ? (
-                      <span className="bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1.5 font-medium">
+                      <span className="flex-shrink-0 flex items-center gap-1 text-[9px] font-mono text-emerald-400">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         LIVE
                       </span>
                     ) : (
-                      <span className="bg-black/70 backdrop-blur-md border border-white/10 text-slate-400 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full">
-                        GITHUB
+                      <span className="flex-shrink-0 text-[9px] font-mono text-slate-400">
+                        CODE
                       </span>
                     )}
                   </div>
 
-                  {/* Quick Expand Prompt */}
-                  <div className="absolute bottom-2.5 right-3 opacity-0 group-hover/img:opacity-100 transition-opacity bg-black/80 backdrop-blur-md border border-white/20 text-slate-200 text-[10px] font-mono px-2 py-1 rounded flex items-center gap-1">
-                    <span>Inspect</span>
-                    <svg className="w-3 h-3 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                    </svg>
+                  <p className="text-[11px] font-mono text-slate-400 mb-2">
+                    {proj.subtitle}
+                  </p>
+
+                  <p className="text-xs text-slate-300 leading-relaxed font-light line-clamp-2 mb-3">
+                    {proj.desc}
+                  </p>
+                </div>
+
+                {/* Tags & Action Links */}
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/[0.06]">
+                  <div className="flex flex-wrap gap-1">
+                    {proj.tags.slice(0, 3).map((tag, tIdx) => (
+                      <span
+                        key={tIdx}
+                        className="text-[9px] font-mono px-2 py-0.5 rounded bg-white/[0.03] border border-white/[0.06] text-slate-400"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                </div>
 
-                {/* Project Title & Subtitle */}
-                <h3 className="text-xl font-heading text-slate-100 group-hover:text-emerald-300 transition-colors mb-1">
-                  <a
-                    href={proj.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline focus:outline-none"
-                  >
-                    {proj.title}
-                  </a>
-                </h3>
-                <p className="text-[11px] font-mono text-slate-400 mb-2.5">
-                  {proj.subtitle}
-                </p>
-
-                {/* Clear, readable description that blends smoothly */}
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light line-clamp-3 mb-4">
-                  {proj.desc}
-                </p>
-              </div>
-
-              {/* Bottom: Tags & Actions */}
-              <div>
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {proj.tags.map((tag, tIdx) => (
-                    <span
-                      key={tIdx}
-                      className="text-[10px] font-mono tracking-wide px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.06] text-slate-300/80"
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProject(proj)}
+                      className="text-[10px] font-mono text-slate-400 hover:text-white uppercase tracking-wider transition-colors"
                     >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Action Row */}
-                <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedProject(proj)}
-                    className="text-[11px] font-mono text-slate-400 hover:text-white transition-colors uppercase tracking-wider flex items-center gap-1.5"
-                  >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                    Details
-                  </button>
-
-                  <a
-                    href={proj.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/60 text-emerald-300 text-[11px] font-mono uppercase tracking-wider transition-all duration-200"
-                  >
-                    <span>{proj.isLive ? 'Launch Live' : 'View Code'}</span>
-                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M7 17L17 7M17 7H7M17 7V17" />
-                    </svg>
-                  </a>
+                      DETAILS »
+                    </button>
+                    <a
+                      href={proj.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] font-mono text-emerald-300 hover:text-white uppercase tracking-wider transition-colors font-medium"
+                    >
+                      {proj.isLive ? 'LAUNCH »' : 'VIEW CODE »'}
+                    </a>
+                  </div>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Established link to Contact */}
-        <div className="mt-12 text-center md:text-left">
+        {/* Minimal Bottom Transition */}
+        <div className="mt-8">
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-cyan-300 hover:text-white transition-colors font-mono font-medium px-4 py-2 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 bg-cyan-950/20"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-cyan-300 hover:text-white transition-colors font-mono font-medium"
           >
-            <span>Proceed to Deep Dispatch · Contact</span>
-            <span>»</span>
+            <span>DISPATCH TO CONTACT & COMMS »</span>
           </a>
         </div>
       </div>
 
-      {/* Fullscreen Project Preview Modal */}
+      {/* Project Details Modal */}
       {selectedProject && (
         <div
           onClick={() => setSelectedProject(null)}
@@ -272,44 +262,63 @@ export default function ProjectsSection() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-4xl w-full bg-surface/95 border border-line-strong rounded-2xl overflow-hidden shadow-2xl p-6 md:p-8 cursor-default"
+            className="cosmic-panel rounded-2xl p-6 sm:p-8 max-w-xl w-full border border-white/20 shadow-2xl relative cursor-default"
           >
             <button
               onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 text-ink-dim hover:text-accent bg-card-bg/80 border border-line rounded-full w-8 h-8 flex items-center justify-center font-mono text-sm transition-colors"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/60 rounded-full w-8 h-8 flex items-center justify-center font-mono text-sm border border-white/10"
             >
               ✕
             </button>
 
-            <div className="relative h-52 md:h-72 w-full overflow-hidden rounded-xl border border-line mb-6 bg-black/50">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover" />
+            <div className="w-full h-48 sm:h-56 rounded-xl overflow-hidden mb-5 border border-white/10 bg-black/50">
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-accent/10 border border-accent/30 text-accent uppercase tracking-wider">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                 {selectedProject.badge}
               </span>
-              <span className="text-xs font-mono text-ink-faint">{selectedProject.subtitle}</span>
+              <span className="text-[11px] font-mono text-slate-400">
+                {selectedProject.category}
+              </span>
             </div>
 
-            <h3 className="text-2xl md:text-3xl font-heading text-ink-solid mb-3">{selectedProject.title}</h3>
-            <p className="text-sm text-ink-dim leading-relaxed mb-6 font-light">{selectedProject.desc}</p>
+            <h3 className="text-xl sm:text-2xl font-heading text-slate-100 mb-1 font-medium">
+              {selectedProject.title}
+            </h3>
+            <p className="text-xs font-mono text-cyan-400 mb-4">
+              {selectedProject.subtitle}
+            </p>
 
-            <div className="flex gap-4">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light mb-5">
+              {selectedProject.desc}
+            </p>
+
+            <div className="flex flex-wrap gap-1.5 mb-6">
+              {selectedProject.tags.map((tag, tIdx) => (
+                <span
+                  key={tIdx}
+                  className="text-[10px] font-mono px-2.5 py-1 rounded bg-white/[0.05] border border-white/10 text-slate-300"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-4 pt-4 border-t border-white/[0.08]">
               <a
                 href={selectedProject.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-accent text-surface font-mono text-xs uppercase tracking-wider font-semibold hover:bg-accent/90 transition-colors"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-emerald-300 hover:text-white transition-colors font-mono font-medium"
               >
-                {selectedProject.isLive ? 'Launch Live »' : 'Open Repo »'}
+                <span>{selectedProject.isLive ? 'LAUNCH LIVE SYSTEM »' : 'VIEW REPOSITORY CODE »'}</span>
               </a>
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="px-5 py-3 rounded-lg bg-surface border border-line text-ink-dim font-mono text-xs uppercase tracking-wider hover:text-ink-solid transition-colors"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>
