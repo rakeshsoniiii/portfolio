@@ -1,0 +1,30 @@
+[GRAPHIFY OUTPUT]
+Project: rakesh-soni-portfolio
+Status: COMPLETED
+Architecture: React 18 + Three.js + Tailwind CSS
+Primary Entrypoint: src/main.jsx -> src/App.jsx
+
+Subsystems:
+1. WebGL Solar System Core: src/components/SolarCanvas.jsx
+   - 8 planetary systems, animated procedurally-shaded Helios Sun, 5,000 depth-scaled circular stars
+2. 3D Code-Based Cinematic Scroll Intro: src/components/CinematicIntro.jsx
+   - 100vh sticky scroll scrubber (380vh scroll track)
+   - Procedural 3D laptop, desk, room, procedural 3D city buildings (180 instanced skyscrapers), subcontinent terrain, cloud decks, Earth
+   - Seamless 1:1 handoff to #hero Earth at progress 1.0
+3. Narrative & Portfolio Sections:
+   - Navigation: src/components/Navigation.jsx
+   - Telemetry HUD: src/components/RightSidebar.jsx
+   - Hero: src/components/HeroSection.jsx (Earth orbit, flowing cursive signature, arstraumur aesthetic)
+   - About: src/components/AboutSection.jsx (Rakesh portrait, philosophy, technical discipline)
+   - Featured: src/components/FeaturedSection.jsx (Detective-L)
+   - Achievements: src/components/AchievementsSection.jsx (Awards & Honors)
+   - Projects: src/components/ProjectsSection.jsx (11 engineering repositories)
+   - Contact: src/components/ContactSection.jsx
+   - Footer: src/components/Footer.jsx
+
+Graph Outputs:
+- graphify-out/graph.json
+- graphify-out/GRAPH_REPORT.md
+- graphify-out/graph.html
+
+Timestamp: 2026-09-04T20:27:00Z
