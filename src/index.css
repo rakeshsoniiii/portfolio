@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Marcellus&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --sky-zenith: #020308;
+    --sky-mid: #04070e;
+    --sky-horizon: #060b16;
+    --bg: #04070e;
+    --surface: #020308;
+    --elevated: #16171C;
+    --card-bg: #04060C;
+    --ink: rgba(230, 237, 245, 0.92);
+    --ink-dim: rgba(199, 210, 222, 0.72);
+    --ink-faint: rgba(176, 189, 204, 0.66);
+    --ink-solid: #E6EDF5;
+    --accent: #8fc7a4;
+    --accent-dim: rgba(143, 199, 164, 0.55);
+    --line: rgba(154, 176, 201, 0.16);
+    --line-strong: rgba(154, 176, 201, 0.3);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #020308;
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    overflow-x: hidden;
+    background: #020308;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(143, 199, 164, 0.35);
+    color: #E6EDF5;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Marcellus', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.15;
+    color: #E6EDF5;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #020308;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(154, 176, 201, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(143, 199, 164, 0.4);
+}
+
+/* Scrim gradient overlay for high contrast readability */
+.scrim-panel {
+  background: radial-gradient(circle at 10% 50%, rgba(2, 3, 8, 0.85) 0%, rgba(2, 3, 8, 0.4) 70%, transparent 100%);
+  backdrop-filter: blur(2px);
+}
