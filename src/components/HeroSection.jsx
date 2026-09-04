@@ -22,29 +22,29 @@ export default function HeroSection() {
           <h1 className="sr-only">Rakesh Soni</h1>
         </div>
 
-        {/* Subtitle description — editorial line-height */}
-        <p className="text-sm sm:text-base text-ink-dim font-light leading-[1.8] max-w-md mb-10">
+        {/* Subtitle description — editorial line-height and high readability */}
+        <p className="text-sm sm:text-base text-slate-200/90 font-light leading-[1.8] max-w-md mb-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
           Full-stack software architecture & embedded systems engineering.
           Building high-performance systems from autonomous robotics to 3D WebGL.
         </p>
 
         {/* Minimal CTA links */}
-        <div className="flex flex-wrap items-center gap-7">
+        <div className="flex flex-wrap items-center gap-5 sm:gap-7">
           <a
             href="#featured"
-            className="text-[11px] uppercase tracking-[0.22em] text-accent hover:text-ink-solid transition-colors font-mono"
+            className="text-xs uppercase tracking-[0.22em] text-emerald-300 hover:text-white transition-colors font-mono font-medium"
           >
             ENTER THE CATALOGUE »
           </a>
           <a
             href="#achievements"
-            className="text-[11px] uppercase tracking-[0.22em] text-ink-dim hover:text-accent transition-colors font-mono"
+            className="text-xs uppercase tracking-[0.22em] text-slate-300 hover:text-amber-300 transition-colors font-mono"
           >
             AWARDS & HONORS »
           </a>
           <a
             href="#projects"
-            className="text-[11px] uppercase tracking-[0.22em] text-ink-dim hover:text-accent transition-colors font-mono"
+            className="text-xs uppercase tracking-[0.22em] text-slate-300 hover:text-cyan-300 transition-colors font-mono"
           >
             ALL 11 WORKS »
           </a>

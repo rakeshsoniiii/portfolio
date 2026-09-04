@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import SolarCanvas, { PLANET_INFO } from './components/SolarCanvas';
 import Navigation from './components/Navigation';
 import RightSidebar from './components/RightSidebar';
-import CinematicIntro from './components/CinematicIntro';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
 import FeaturedSection from './components/FeaturedSection';
@@ -27,10 +26,6 @@ export default function App() {
 
       {/* Main Narrative Content Sections */}
       <main className="relative z-10 md:pr-14">
-        {/* Pure Code-Based 3D Continuous Scroll Zoom-Out Intro */}
-        <CinematicIntro />
-
-        {/* Core Narrative Sections */}
         <HeroSection />
         <AboutSection />
         <FeaturedSection />

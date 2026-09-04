@@ -101,27 +101,36 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="min-h-screen relative flex flex-col justify-center px-6 md:px-16 lg:px-24 py-28 z-10"
+      className="min-h-screen relative flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-20 py-28 z-10"
     >
-      <div className="max-w-3xl">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-ink-faint mb-3 font-mono">
-          URANUS · 19.2 AU · DEPLOYED SYSTEMS
-        </p>
+      <div className="max-w-6xl w-full">
+        {/* Section Header */}
+        <header className="mb-8">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-cyan-400/90 mb-3 font-mono font-medium flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse inline-block" />
+            URANUS · 19.2 AU · DEPLOYED ARCHITECTURES
+          </p>
 
-        <h2 className="text-4xl md:text-6xl text-ink-solid mb-6 tracking-tight font-heading">
-          Selected Works
-        </h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl text-blend-heading mb-4 tracking-tight font-heading">
+            Selected Works
+          </h2>
+          <p className="text-sm md:text-base text-slate-300/90 font-light max-w-2xl leading-relaxed">
+            Production-grade web platforms, autonomous robotics pipelines, game engines, and full-stack AI applications engineered for performance.
+          </p>
+        </header>
 
-        {/* Minimal Filter Tabs */}
-        <div className="flex flex-wrap gap-3 mb-10 text-[11px] font-mono uppercase tracking-widest">
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 text-[11px] font-mono uppercase tracking-widest" role="tablist">
           {categories.map((cat) => (
             <button
               key={cat.key}
+              role="tab"
+              aria-selected={filter === cat.key}
               onClick={() => setFilter(cat.key)}
-              className={`transition-colors ${
+              className={`px-3.5 py-1.5 rounded-full transition-all duration-200 border ${
                 filter === cat.key
-                  ? 'text-accent'
-                  : 'text-ink-faint hover:text-ink-solid'
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
+                  : 'bg-black/30 text-slate-400 border-white/[0.08] hover:text-white hover:border-white/20'
               }`}
             >
               {cat.label}
@@ -129,94 +138,130 @@ export default function ProjectsSection() {
           ))}
         </div>
 
-        {/* Individual Project Rows — no grid, no cards */}
-        <div className="space-y-0">
+        {/* Balanced Responsive Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {filteredProjects.map((proj) => (
-            <div
+            <article
               key={proj.id}
-              className="border-t border-line/50 py-7 md:py-9 group hover:bg-white/[0.02] transition-colors -mx-4 px-4"
+              className="cosmic-panel cosmic-panel-hover rounded-2xl p-5 md:p-6 flex flex-col justify-between group relative overflow-hidden"
             >
-              {/* Badge + Status Row */}
-              <div className="flex items-center justify-between gap-3 mb-2 text-[10px] font-mono uppercase tracking-widest">
-                <span className="text-ink-faint">{proj.badge}</span>
-                {proj.isLive ? (
-                  <span className="flex items-center gap-1 text-emerald-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    LIVE
-                  </span>
-                ) : (
-                  <span className="text-ink-faint">GITHUB</span>
-                )}
-              </div>
-
-              {/* Title Row with Inline Thumbnail */}
-              <div className="flex items-start gap-4 md:gap-6">
-                {/* Small Inline Thumbnail */}
+              {/* Top: Balanced Image Box */}
+              <div>
                 <div
                   onClick={() => setSelectedProject(proj)}
-                  className="w-20 h-14 md:w-28 md:h-20 rounded overflow-hidden cursor-pointer border border-line/40 hover:border-accent/50 transition-all flex-shrink-0 group/img"
+                  className="w-full h-44 sm:h-48 md:h-52 rounded-xl overflow-hidden mb-4 relative cursor-pointer group/img border border-white/[0.08] bg-black/50 shadow-inner"
+                  title={`View details for ${proj.title}`}
                 >
                   <img
                     src={proj.image}
-                    alt={proj.title}
-                    className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500"
+                    alt={`${proj.title} project interface preview`}
+                    className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
+                  {/* Subtle Gradient Scrim for Top & Bottom of Image */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
+
+                  {/* Overlaid Badges inside the Image Box */}
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
+                    <span className="bg-black/70 backdrop-blur-md border border-white/10 text-emerald-300 text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md font-medium">
+                      {proj.badge}
+                    </span>
+                    {proj.isLive ? (
+                      <span className="bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1.5 font-medium">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        LIVE
+                      </span>
+                    ) : (
+                      <span className="bg-black/70 backdrop-blur-md border border-white/10 text-slate-400 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full">
+                        GITHUB
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Quick Expand Prompt */}
+                  <div className="absolute bottom-2.5 right-3 opacity-0 group-hover/img:opacity-100 transition-opacity bg-black/80 backdrop-blur-md border border-white/20 text-slate-200 text-[10px] font-mono px-2 py-1 rounded flex items-center gap-1">
+                    <span>Inspect</span>
+                    <svg className="w-3 h-3 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="flex-1 min-w-0">
+                {/* Project Title & Subtitle */}
+                <h3 className="text-xl font-heading text-slate-100 group-hover:text-emerald-300 transition-colors mb-1">
                   <a
                     href={proj.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block"
+                    className="hover:underline focus:outline-none"
                   >
-                    <h3 className="text-lg md:text-xl font-heading text-ink-solid group-hover:text-accent transition-colors mb-0.5 truncate">
-                      {proj.title}
-                    </h3>
+                    {proj.title}
                   </a>
-                  <p className="text-[11px] font-mono text-ink-faint mb-2">
-                    {proj.subtitle}
-                  </p>
-                  <p className="text-xs text-ink-dim leading-relaxed font-light line-clamp-2 mb-3 max-w-lg">
-                    {proj.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {proj.tags.map((tag, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="text-[9px] font-mono tracking-wider uppercase text-ink-faint"
-                      >
-                        {tag}{tIdx < proj.tags.length - 1 ? ' ·' : ''}
-                      </span>
-                    ))}
-                  </div>
+                </h3>
+                <p className="text-[11px] font-mono text-slate-400 mb-2.5">
+                  {proj.subtitle}
+                </p>
+
+                {/* Clear, readable description that blends smoothly */}
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light line-clamp-3 mb-4">
+                  {proj.desc}
+                </p>
+              </div>
+
+              {/* Bottom: Tags & Actions */}
+              <div>
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {proj.tags.map((tag, tIdx) => (
+                    <span
+                      key={tIdx}
+                      className="text-[10px] font-mono tracking-wide px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.06] text-slate-300/80"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
 
-                {/* Action Link */}
-                <a
-                  href={proj.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden md:flex items-center gap-1 text-[10px] font-mono text-accent hover:text-ink-solid transition-colors uppercase tracking-widest flex-shrink-0 pt-1"
-                >
-                  {proj.isLive ? 'LAUNCH' : 'REPO'}
-                  <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                </a>
+                {/* Action Row */}
+                <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(proj)}
+                    className="text-[11px] font-mono text-slate-400 hover:text-white transition-colors uppercase tracking-wider flex items-center gap-1.5"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    Details
+                  </button>
+
+                  <a
+                    href={proj.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/60 text-emerald-300 text-[11px] font-mono uppercase tracking-wider transition-all duration-200"
+                  >
+                    <span>{proj.isLive ? 'Launch Live' : 'View Code'}</span>
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M7 17L17 7M17 7H7M17 7V17" />
+                    </svg>
+                  </a>
+                </div>
               </div>
-            </div>
+            </article>
           ))}
-          <div className="border-t border-line/50" />
         </div>
 
-        <a
-          href="#contact"
-          className="inline-block mt-10 text-[11px] uppercase tracking-[0.22em] text-accent hover:text-ink-solid transition-colors font-mono"
-        >
-          ESTABLISH CONTACT »
-        </a>
+        {/* Established link to Contact */}
+        <div className="mt-12 text-center md:text-left">
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-cyan-300 hover:text-white transition-colors font-mono font-medium px-4 py-2 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 bg-cyan-950/20"
+          >
+            <span>Proceed to Deep Dispatch · Contact</span>
+            <span>»</span>
+          </a>
+        </div>
       </div>
 
       {/* Fullscreen Project Preview Modal */}

@@ -45,86 +45,124 @@ export default function AchievementsSection() {
   return (
     <section
       id="achievements"
-      className="min-h-screen relative flex flex-col justify-center px-6 md:px-16 lg:px-24 py-28 z-10"
+      className="min-h-screen relative flex flex-col justify-center px-4 sm:px-8 md:px-14 lg:px-20 py-28 z-10"
     >
-      <div className="max-w-3xl">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-ink-faint mb-3 font-mono">
-          SATURN · 9.58 AU · YEAR RINGS & HONORS
-        </p>
+      <div className="max-w-5xl w-full">
+        {/* Section Header */}
+        <header className="mb-10">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-amber-400/90 mb-3 font-mono font-medium flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse inline-block" />
+            SATURN · 9.58 AU · HONORS & RECOGNITION
+          </p>
 
-        <h2 className="text-4xl md:text-6xl text-ink-solid mb-12 tracking-tight font-heading">
-          Achievements
-        </h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl text-blend-heading mb-4 tracking-tight font-heading">
+            Achievements
+          </h2>
+          <p className="text-sm md:text-base text-slate-300/90 font-light max-w-2xl leading-relaxed">
+            Competitive robotics victories, hackathon podium placements, and exhibition leadership milestones.
+          </p>
+        </header>
 
-        {/* Individual Achievement Rows — no grid, no cards */}
-        <div className="space-y-0">
+        {/* Balanced Achievement Cards */}
+        <div className="space-y-6">
           {awards.map((award, idx) => (
-            <div
+            <article
               key={idx}
-              className="border-t border-line/50 py-8 md:py-10 group hover:bg-white/[0.02] transition-colors -mx-4 px-4"
+              className="cosmic-panel cosmic-panel-hover rounded-2xl p-6 md:p-8 group relative overflow-hidden"
             >
-              {/* Date + Badge Row */}
-              <div className="flex items-center gap-4 mb-3 text-[11px] font-mono text-ink-faint uppercase tracking-widest">
-                <span>{award.year}</span>
-                <span className="text-accent">{award.badge}</span>
+              {/* Top Row: Year, Badge, Team */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono text-slate-400">
+                    {award.year}
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider uppercase font-semibold bg-amber-400/10 text-amber-300 border border-amber-400/30">
+                    {award.badge}
+                  </span>
+                </div>
+                <span className="text-xs font-mono text-slate-400 hidden sm:inline">
+                  {award.team}
+                </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-xl md:text-2xl font-heading text-ink-solid mb-2 group-hover:text-accent transition-colors">
+              <h3 className="text-xl sm:text-2xl font-heading text-slate-100 group-hover:text-amber-300 transition-colors mb-2 font-medium">
                 {award.title}
               </h3>
 
-              {/* Team */}
-              <p className="text-xs font-mono text-ink-faint mb-3">
+              {/* Mobile Team display */}
+              <p className="text-xs font-mono text-slate-400 mb-3 sm:hidden">
                 {award.team}
               </p>
 
               {/* Description */}
-              <p className="text-sm text-ink-dim leading-relaxed font-light mb-5 max-w-2xl">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light mb-5 max-w-3xl">
                 {award.desc}
               </p>
 
-              {/* Inline Photo Strip — small thumbnails, click to fullscreen */}
-              <div className="flex items-center gap-3 mb-4">
-                {award.images.map((imgSrc, imgIdx) => (
-                  <div
-                    key={imgIdx}
-                    onClick={() => setSelectedImage(imgSrc)}
-                    className="w-20 h-14 md:w-28 md:h-20 rounded overflow-hidden cursor-pointer border border-line/40 hover:border-accent/50 transition-all group/img"
-                  >
-                    <img
-                      src={imgSrc}
-                      alt={`${award.title} photo ${imgIdx + 1}`}
-                      className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
+              {/* Balanced Photo Gallery Grid Box */}
+              <div className="mb-5">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-2.5 flex items-center gap-1.5">
+                  <span>Photo Evidence (Click to inspect)</span>
+                  <span>·</span>
+                  <span className="text-amber-400/80">{award.images.length} frame{award.images.length > 1 ? 's' : ''}</span>
+                </p>
+
+                <div className={`grid gap-3 sm:gap-4 ${
+                  award.images.length === 1
+                    ? 'grid-cols-1 sm:grid-cols-2 max-w-lg'
+                    : award.images.length === 2
+                    ? 'grid-cols-2 max-w-xl'
+                    : 'grid-cols-2 sm:grid-cols-3'
+                }`}>
+                  {award.images.map((imgSrc, imgIdx) => (
+                    <div
+                      key={imgIdx}
+                      onClick={() => setSelectedImage(imgSrc)}
+                      className="h-28 sm:h-36 md:h-40 rounded-xl overflow-hidden cursor-pointer border border-white/10 hover:border-amber-400/60 hover:scale-[1.02] transition-all group/photo relative bg-black/50 shadow-md"
+                      title="Click to view high-resolution photo"
+                    >
+                      <img
+                        src={imgSrc}
+                        alt={`${award.title} proof photo ${imgIdx + 1}`}
+                        className="w-full h-full object-cover group-hover/photo:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/photo:opacity-100 transition-opacity flex items-end p-2 pointer-events-none">
+                        <span className="text-[10px] font-mono text-amber-300 bg-black/80 px-2 py-0.5 rounded">
+                          Enlarge ↗
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Tags — minimal inline */}
-              <div className="flex flex-wrap gap-2">
+              {/* Tags */}
+              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/[0.06]">
                 {award.tags.map((tag, tIdx) => (
                   <span
                     key={tIdx}
-                    className="text-[9px] font-mono tracking-wider uppercase text-ink-faint"
+                    className="text-[10px] font-mono tracking-wide px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.06] text-slate-300/80"
                   >
-                    {tag}{tIdx < award.tags.length - 1 ? ' ·' : ''}
+                    {tag}
                   </span>
                 ))}
               </div>
-            </div>
+            </article>
           ))}
-          {/* Bottom border */}
-          <div className="border-t border-line/50" />
         </div>
 
-        <a
-          href="#projects"
-          className="inline-block mt-10 text-[11px] uppercase tracking-[0.22em] text-accent hover:text-ink-solid transition-colors font-mono"
-        >
-          VIEW ALL 11 PROJECTS »
-        </a>
+        {/* Transition Link */}
+        <div className="mt-10">
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-amber-300 hover:text-white transition-colors font-mono font-medium px-4 py-2 rounded-full border border-amber-500/30 hover:border-amber-400/60 bg-amber-950/20"
+          >
+            <span>Transit to Projects · 11 Repositories</span>
+            <span>»</span>
+          </a>
+        </div>
       </div>
 
       {/* Fullscreen Lightbox Modal */}

@@ -534,32 +534,32 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     bodies.neptune = { group: neptuneGroup, triton: tritonMesh, speed: 0.0014 };
 
     // --- Cinematic Camera Flight Waypoints (Scroll-driven 3D Path) ---
-    // True 3D curved trajectory with 180°–360° orbital sweeps, banking roll, and zooms
+    // Curved trajectory positioning planets on screen-right to ensure 100% text legibility on left
     const flightPath = [
-      // 0.00: Earth Close Orbit (Hero Start)
-      { p: 0.00, cam: new THREE.Vector3(-0.4, 0.4, 10.5), look: new THREE.Vector3(2.8, -0.2, 0), roll: 0.0 },
-      // 0.08: 180° Orbital Swing around Earth's terminator (Zoom in & Roll)
-      { p: 0.08, cam: new THREE.Vector3(-2.2, 1.8, 12.0), look: new THREE.Vector3(2.5, 0.1, -5), roll: 0.22 },
-      // 0.18: Slingshot toward Moon & Mars (About Section)
-      { p: 0.18, cam: new THREE.Vector3(0.6, 1.0, -18.0), look: new THREE.Vector3(3.2, 0.4, -30), roll: -0.25 },
-      // 0.28: Gliding through Martian Orbit
-      { p: 0.28, cam: new THREE.Vector3(2.2, 2.0, -38.0), look: new THREE.Vector3(6.5, 2.8, -45), roll: 0.18 },
-      // 0.38: Flying through Asteroid Belt towards Jupiter (Banking turn)
-      { p: 0.38, cam: new THREE.Vector3(-1.0, -0.8, -62.0), look: new THREE.Vector3(3.8, -0.3, -85), roll: -0.35 },
-      // 0.48: Jupiter Great Red Spot 360° Flyaround (Featured Section)
-      { p: 0.48, cam: new THREE.Vector3(0.5, -0.2, -73.0), look: new THREE.Vector3(4.0, -0.3, -85), roll: 0.15 },
-      // 0.58: Climbing High Above Saturn's Ring Plane (Achievements Approach)
-      { p: 0.58, cam: new THREE.Vector3(1.2, 6.8, -126.0), look: new THREE.Vector3(3.8, 0.4, -145), roll: 0.42 },
-      // 0.68: Cassini Dive Under Saturn's Rings (180° inversion under ring shadow)
-      { p: 0.68, cam: new THREE.Vector3(-0.8, 1.4, -134.0), look: new THREE.Vector3(3.8, 0.4, -145), roll: -0.28 },
-      // 0.78: Flight past tilted Uranus (Projects Section)
-      { p: 0.78, cam: new THREE.Vector3(0.2, 0.8, -178.0), look: new THREE.Vector3(3.4, 0.2, -195), roll: 0.2 },
-      // 0.88: Neptune Deep Space Outpost (Contact Section)
-      { p: 0.88, cam: new THREE.Vector3(-0.4, -0.3, -220.0), look: new THREE.Vector3(3.0, -0.3, -235), roll: -0.15 },
+      // 0.00: Earth Close Orbit (Hero Start) — Earth positioned majestically on the right
+      { p: 0.00, cam: new THREE.Vector3(-0.8, 0.4, 10.5), look: new THREE.Vector3(1.6, -0.2, 0), roll: 0.0 },
+      // 0.08: 180° Orbital Swing around Earth's terminator
+      { p: 0.08, cam: new THREE.Vector3(-2.8, 1.8, 12.0), look: new THREE.Vector3(1.2, 0.1, -5), roll: 0.2 },
+      // 0.18: Moon & Mars (About Section) — framed on right
+      { p: 0.18, cam: new THREE.Vector3(-1.4, 0.8, -18.0), look: new THREE.Vector3(1.2, 0.4, -30), roll: -0.2 },
+      // 0.28: Martian Orbit approach
+      { p: 0.28, cam: new THREE.Vector3(-0.2, 1.8, -36.0), look: new THREE.Vector3(3.2, 2.0, -45), roll: 0.15 },
+      // 0.38: Approach towards Jupiter
+      { p: 0.38, cam: new THREE.Vector3(-2.2, -0.6, -62.0), look: new THREE.Vector3(1.0, -0.3, -85), roll: -0.3 },
+      // 0.48: Jupiter & Galilean Moons (Featured Section) — framed on right
+      { p: 0.48, cam: new THREE.Vector3(-2.0, -0.2, -72.0), look: new THREE.Vector3(1.0, -0.3, -85), roll: 0.12 },
+      // 0.58: Saturn Rings High Angle (Achievements Approach) — rings span right side
+      { p: 0.58, cam: new THREE.Vector3(-1.8, 5.2, -125.0), look: new THREE.Vector3(0.8, 0.4, -145), roll: 0.35 },
+      // 0.68: Saturn Cassini Underpass — text completely clear on left
+      { p: 0.68, cam: new THREE.Vector3(-2.6, 2.0, -132.0), look: new THREE.Vector3(0.6, 0.4, -145), roll: -0.22 },
+      // 0.78: Uranus Flight (Projects Section) — Uranus on right, left 65% open for projects grid
+      { p: 0.78, cam: new THREE.Vector3(-1.8, 0.8, -177.0), look: new THREE.Vector3(0.6, 0.2, -195), roll: 0.18 },
+      // 0.88: Neptune Deep Space Outpost (Contact Section) — Neptune & Sun on right
+      { p: 0.88, cam: new THREE.Vector3(-3.4, 0.6, -218.0), look: new THREE.Vector3(0.2, -0.2, -235), roll: -0.12 },
       // 0.94: Pulling back into Heliocentric Overview
-      { p: 0.94, cam: new THREE.Vector3(0.0, 55.0, -180.0), look: new THREE.Vector3(0, 0, -260), roll: 0.05 },
-      // 1.00: Full 360° Grand Solar System View & Sun Core (Finale Observatory)
-      { p: 1.00, cam: new THREE.Vector3(0.0, 135.0, -75.0), look: new THREE.Vector3(0, 0, -260), roll: 0.0 },
+      { p: 0.94, cam: new THREE.Vector3(-2.0, 48.0, -185.0), look: new THREE.Vector3(1.0, 0, -260), roll: 0.05 },
+      // 1.00: Full 360° Grand Solar System View & Sun Core
+      { p: 1.00, cam: new THREE.Vector3(0.0, 130.0, -85.0), look: new THREE.Vector3(0, 0, -260), roll: 0.0 },
     ];
 
     // Spline-like smooth Hermite interpolation along 3D flight path
@@ -599,7 +599,9 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
+      const isMob = width < 768;
       camera.aspect = width / height;
+      camera.fov = isMob ? 54 : 45;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
@@ -618,13 +620,50 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       if (currentY <= introHeight) {
         // While user is in intro, SolarCanvas stays locked at 0.00 (Earth)
         targetProg = 0.0;
-      } else {
-        // Once past intro into portfolio sections, smoothly map scroll through solar system
+        return;
+      }
+
+      // Precise section-anchored waypoint interpolation
+      const sectionAnchors = [
+        { id: 'hero', prog: 0.00 },
+        { id: 'about', prog: 0.18 },
+        { id: 'featured', prog: 0.48 },
+        { id: 'achievements', prog: 0.68 },
+        { id: 'projects', prog: 0.78 },
+        { id: 'contact', prog: 0.94 },
+      ];
+
+      const tops = sectionAnchors.map((item) => {
+        const el = document.getElementById(item.id);
+        return el ? el.offsetTop : null;
+      });
+
+      if (tops[0] === null) {
         const mainScrollable = document.documentElement.scrollHeight - window.innerHeight - introHeight;
-        if (mainScrollable > 0) {
-          targetProg = Math.max(0, Math.min(1, (currentY - introHeight) / mainScrollable));
+        targetProg = mainScrollable > 0 ? Math.max(0, Math.min(1, (currentY - introHeight) / mainScrollable)) : 0;
+        return;
+      }
+
+      const scrollPos = currentY + window.innerHeight * 0.35;
+      if (scrollPos <= tops[0]) {
+        targetProg = 0.00;
+        return;
+      }
+      if (scrollPos >= tops[tops.length - 1]) {
+        targetProg = 1.00;
+        return;
+      }
+
+      for (let i = 0; i < tops.length - 1; i++) {
+        const topCurrent = tops[i];
+        const topNext = tops[i + 1];
+        if (topCurrent !== null && topNext !== null && scrollPos >= topCurrent && scrollPos < topNext) {
+          const ratio = (scrollPos - topCurrent) / (topNext - topCurrent);
+          targetProg = sectionAnchors[i].prog + ratio * (sectionAnchors[i + 1].prog - sectionAnchors[i].prog);
+          return;
         }
       }
+      targetProg = 1.00;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -654,13 +693,16 @@ export default function SolarCanvas({ onWaypointChange, onPlanetChange }) {
       // Calculate camera position and lookAt on the flight path
       const flight = getFlightState(currentProg);
 
-      // Responsive 6-DOF mouse parallax
-      const pX = mouseX * 0.6;
-      const pY = -mouseY * 0.6;
+      // Responsive 6-DOF mouse parallax & mobile viewport framing
+      const isMob = width < 768;
+      const pX = mouseX * (isMob ? 0.2 : 0.6);
+      const pY = -mouseY * (isMob ? 0.2 : 0.6);
+      const mobCamZ = isMob ? (currentProg > 0.04 ? 2.8 : 0) : 0;
+      const mobCamX = isMob ? -0.5 : 0;
 
-      camera.position.x += (flight.pos.x + pX - camera.position.x) * 0.065;
+      camera.position.x += (flight.pos.x + pX + mobCamX - camera.position.x) * 0.065;
       camera.position.y += (flight.pos.y + pY - camera.position.y) * 0.065;
-      camera.position.z += (flight.pos.z - camera.position.z) * 0.065;
+      camera.position.z += (flight.pos.z + mobCamZ - camera.position.z) * 0.065;
 
       currentLook.x += (flight.look.x - currentLook.x) * 0.065;
       currentLook.y += (flight.look.y - currentLook.y) * 0.065;
