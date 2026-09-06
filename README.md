@@ -2,7 +2,6 @@
 
 An interactive, immersive 3D Solar System personal portfolio for **Rakesh Soni** (Full-Stack & Systems Software Engineer), built with **React**, **Three.js / WebGL**, and **Tailwind CSS**.
 
-Inspired by the clean editorial aesthetics of [arstraumur.music](https://arstraumur.music/) combined with a real-time astronomical 3D journey through our solar system.
 
 ---
 
